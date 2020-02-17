@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/eli/Documents/Spring 2020/CS 7350/Homework 1/LinkedList.h
+cstdlib
+-
+iostream
+-
+
+/Users/eli/Documents/Spring 2020/CS 7350/Homework 1/main.cpp
+iostream
+-
+random
+-
+chrono
+-
+fstream
+-
+LinkedList.h
+/Users/eli/Documents/Spring 2020/CS 7350/Homework 1/LinkedList.h
+
