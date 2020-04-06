@@ -1,0 +1,38 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/eli/Documents/Spring 2020/CS 7350/CS7350-Algorithm-Engineering/Final Project/LinkedList.h
+cstdlib
+-
+iostream
+-
+node.h
+/Users/eli/Documents/Spring 2020/CS 7350/CS7350-Algorithm-Engineering/Final Project/node.h
+iostream
+-
+
+/Users/eli/Documents/Spring 2020/CS 7350/CS7350-Algorithm-Engineering/Final Project/main.cpp
+iostream
+-
+vertex.h
+/Users/eli/Documents/Spring 2020/CS 7350/CS7350-Algorithm-Engineering/Final Project/vertex.h
+LinkedList.h
+/Users/eli/Documents/Spring 2020/CS 7350/CS7350-Algorithm-Engineering/Final Project/LinkedList.h
+fstream
+-
+string
+-
+vector
+-
+
+/Users/eli/Documents/Spring 2020/CS 7350/CS7350-Algorithm-Engineering/Final Project/node.h
+
+/Users/eli/Documents/Spring 2020/CS 7350/CS7350-Algorithm-Engineering/Final Project/vertex.h
+LinkedList.h
+/Users/eli/Documents/Spring 2020/CS 7350/CS7350-Algorithm-Engineering/Final Project/LinkedList.h
+
