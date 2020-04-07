@@ -26,7 +26,7 @@ public:
     void insertBefore(T x ,Node<T>*);
     void clear();
     bool isEmpty();
-    void remove(T x);
+    Node<T>* remove(T x);
     void printList();
 
     Node<T>* currentNode();
@@ -156,18 +156,29 @@ void LinkedList<T> :: clear(){
 }
 
 template<typename T>
-void LinkedList<T> :: remove(T x ){
+Node<T>* LinkedList<T> :: remove(T x ){
     Node<T>* temp = head;
     while(temp != nullptr){
         if(temp->getData() == x)
             break;
         temp = temp->next;
     }
-    temp->prev->next = temp->next;
-    temp->next->prev = temp->prev;
-    delete temp;
-    length--;
+    if(x != this->head && x != this->tail){
+        temp->prev->next = temp->next;
+        temp->next->prev = temp->prev;
+    }
+    else if(x == this->head && x != this->tail){
+        head = head->next;
+    }
+    else if(x == this->tail){
+        tail = tail->prev;
+    }
+    else{
+        head = tail = nullptr;
+    }
 
+    length--;
+    return temp;
 }
 
 template<typename T>

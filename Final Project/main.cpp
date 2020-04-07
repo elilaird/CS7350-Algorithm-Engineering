@@ -5,7 +5,25 @@
 #include <string>
 #include <vector>
 
-void parseInput(std::ifstream& file, LinkedList<vertex*>*& adjList, vector<LinkedList<vertex*>*>*& degrees);
+#define INF 0x3f3f3f3f
+
+//parses input file and constructs adjList and degreesList
+void parseInput(std::ifstream& file, LinkedList<vertex*>*& adjList, vector<LinkedList<vertex*>*>*& degreeList);
+vector<int> smallestLastOrdering(LinkedList<vertex*>*& adjList, vector<LinkedList<vertex*>*>*& degreeList);
+
+//utility functions
+int min_index(vector<int> v){
+    int min = INF;
+    int index = 0;
+    for(int i = 0; i < v.size(); i++) {
+        if (v[i] < min && v[i] >= 1) {
+            min = v[i];
+            index = i;
+        }
+    }
+    return index;
+}
+
 
 using namespace std;
 
@@ -19,17 +37,17 @@ int main(int argc, char** argv) {
     LinkedList<vertex*>* adjList;
 
     //list of degrees
-    vector<LinkedList<vertex*>*>* degrees;
+    vector<LinkedList<vertex*>*>* degreeList;
 
-    parseInput(file, adjList, degrees);
+    parseInput(file, adjList, degreeList);
 
-
+    vector<int> ordering = smallestLastOrdering(adjList, degreeList);
 
     return 0;
 }
 
 
-void parseInput(std::ifstream& file, LinkedList<vertex*>*& adjList, vector<LinkedList<vertex*>*>*& degrees){
+void parseInput(std::ifstream& file, LinkedList<vertex*>*& adjList, vector<LinkedList<vertex*>*>*& degreeList){
 
     string line;
     vector<int> input;
@@ -79,9 +97,9 @@ void parseInput(std::ifstream& file, LinkedList<vertex*>*& adjList, vector<Linke
     /*~~~~~~~~~~~ BUILD DEGREES LIST ~~~~~~~~~~~*/
 
     //initialize degrees vector
-    degrees = new vector<LinkedList<vertex*>*>();
+    degreeList = new vector<LinkedList<vertex*>*>();
     for(int i = 0; i <=numVertices; i++)
-        degrees->push_back(new LinkedList<vertex*>);
+        degreeList->push_back(new LinkedList<vertex*>);
 
 
 
@@ -89,7 +107,7 @@ void parseInput(std::ifstream& file, LinkedList<vertex*>*& adjList, vector<Linke
 
         //insert vertex into corresponding degree index
         int degree = adjList->currentNode()->getData()->currDegree;
-        degrees->at(degree)->insertAtTail(adjList->currentNode()->getData());
+        degreeList->at(degree)->insertAtTail(adjList->currentNode()->getData());
 
         adjList->nextCurrent();
     }
@@ -98,7 +116,44 @@ void parseInput(std::ifstream& file, LinkedList<vertex*>*& adjList, vector<Linke
 
 }
 
+vector<int> smallestLastOrdering(LinkedList<vertex*>*& adjList, vector<LinkedList<vertex*>*>*& degreeList){
 
+    vector<int> lengths;
+    for(int i = 0; i < degreeList->size();i++)
+        lengths.push_back(degreeList->at(i)->getLength());
+
+    //iterate until all vertices are deleted off degreeList
+    while(degreeList->size() > 0){
+
+        //loop through degreeList and find smallest populated degree list
+        vertex* V = degreeList->at(min_index(lengths))->getHead()->getData();
+
+        //set smallest vertex V to deleted
+        V->deleted = -1;
+
+        //for every neighbor U of V -> insert U into degree i-1 list
+        V->P.currentToHead();
+        while(V->P.currentNode() != nullptr){
+
+            //check if U has been deleted
+            if(V->P.currentNode()->getData()->deleted == -1){
+                V->P.nextCurrent();
+                continue;
+            }
+            //remove U from degree i list
+            vertex* U = degreeList->at(V->P.currentNode()->getData()->currDegree)->remove(V->P.currentNode()->getData())->getData();
+
+            //insert U into degree i-1 list
+            degreeList->at(--U->currDegree)->insertAtTail(U);
+
+
+            V->P.currentNode()->getNext();
+
+        }
+
+
+    }
+}
 
 
 

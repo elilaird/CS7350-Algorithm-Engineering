@@ -12,6 +12,7 @@ class vertex {
 public:
     int id;
     int currDegree;
+    int origDegree;
     int colorVal;
     int deleted;
 
@@ -31,6 +32,7 @@ public:
     vertex(int, int, int, int);
     ~vertex();
     vertex& operator=(const vertex&);
+    bool operator==(const vertex);
 
     void addEdge(LinkedList<vertex*>& adjList, int v);
 

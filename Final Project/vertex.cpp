@@ -9,7 +9,7 @@ vertex::vertex(){
 }
 
 vertex::vertex(int id, int currDegree, int colorVal, int deleted)
-    : id(id), currDegree(currDegree), colorVal(colorVal), deleted(deleted) {}
+    : id(id), currDegree(currDegree), colorVal(colorVal), deleted(deleted), origDegree(currDegree) {}
 
 vertex::vertex(const vertex& v){
 
@@ -27,6 +27,10 @@ vertex& vertex::operator=(const vertex& v) {
     this->orderDeleted = v.orderDeleted;
 
     return *this;
+}
+
+bool vertex::operator==(const vertex v) {
+    return (this->id == v.id);
 }
 
 void vertex::addEdge(LinkedList<vertex*>& adjList, int v) {
