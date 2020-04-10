@@ -16,12 +16,12 @@ typedef std::pair<custom_vec<vertex*>, int> order;
 
 //parses input file and constructs adjList and degreesList
 void parseInput(std::ifstream& file, LinkedList<vertex*>*& adjList, custom_vec<LinkedList<vertex*>*>*& degreeList);
-order smallestLastOrdering(LinkedList<vertex*>*& adjList, custom_vec<LinkedList<vertex*>*>* degreeList);
-order welshPowellOrdering(LinkedList<vertex*>*& adjList, custom_vec<LinkedList<vertex*>*>* degreeList);
-order uniformRandomOrdering(LinkedList<vertex*>*& adjList);
-order largestLastOrdering(LinkedList<vertex*>*& adjList, custom_vec<LinkedList<vertex*>*>* degreeList);
-order largestEccentricityOrdering(LinkedList<vertex*>*& adjList);
-order distanceFromHighestDegreeVertexOrdering(LinkedList<vertex*>*& adjList, custom_vec<LinkedList<vertex*>*>* degreeList);
+order smallestLastOrdering(LinkedList<vertex*>* adjList, custom_vec<LinkedList<vertex*>*>* degreeList);
+order welshPowellOrdering(LinkedList<vertex*>* adjList, custom_vec<LinkedList<vertex*>*>* degreeList);
+order uniformRandomOrdering(LinkedList<vertex*>* adjList);
+order largestLastOrdering(LinkedList<vertex*>* adjList, custom_vec<LinkedList<vertex*>*>* degreeList);
+order largestEccentricityOrdering(LinkedList<vertex*>* adjList);
+order distanceFromHighestDegreeVertexOrdering(LinkedList<vertex*>* adjList, custom_vec<LinkedList<vertex*>*>* degreeList);
 int color_graph(custom_vec<vertex*>& ordering);
 
 //utility functions
@@ -129,6 +129,15 @@ int DFS_Search(LinkedList<vertex*>*& adjList, vertex* src, vertex* dest) {
 
     return distance;
 }
+bool check_connection(LinkedList<vertex*> list, int key){
+    for(auto iter = list.getHead(); iter != nullptr; iter = iter->getNext()){
+        if( iter->getData()->id == key){
+            return true;
+        }
+    }
+
+    return false;
+}
 
 
 int main(int argc, char** argv) {
@@ -145,13 +154,33 @@ int main(int argc, char** argv) {
 
     parseInput(file, adjList, degreeList);
 
-    //order result = welshPowellOrdering(adjList, degreeList);
-    //order result = smallestLastOrdering(adjList, degreeList);
-    //order result = uniformRandomOrdering(adjList);
-    //order result = largestLastOrdering(adjList, degreeList);
-    order result = largestEccentricityOrdering(adjList);
-    //order result = distanceFromHighestDegreeVertexOrdering(adjList, degreeList);
-    print_results(result.first, result.second);
+//    std::cout<< "~~~~~~~~~~ SMALLEST LAST VERTEX ORDERING ~~~~~~~~~~ \n\n" << std::endl;
+//    order result = smallestLastOrdering(adjList, degreeList);
+//    print_results(result.first, result.second);
+//    std::cout << "Max Clique of Graph: " << result.second << "\n" << std::endl;
+
+
+    // UNCOMMENT TO USE. ONE AT A TIME
+
+//    std::cout<< "~~~~~~~~~~ WELSH-POWELL ORDERING ~~~~~~~~~~ \n\n" << std::endl;
+//    order result2 = welshPowellOrdering(adjList, degreeList);
+//    print_results(result2.first, result2.second);
+//
+//    std::cout<< "~~~~~~~~~~ UNIFORM RANDOM ORDERING ~~~~~~~~~~ \n\n" << std::endl;
+//    order result3 = uniformRandomOrdering(adjList);
+//    print_results(result3.first, result3.second);
+//
+//    std::cout<< "~~~~~~~~~~ LARGEST LAST VERTEX ORDERING ~~~~~~~~~~ \n\n" << std::endl;
+//    order result4 = largestLastOrdering(adjList, degreeList);
+//    print_results(result4.first, result4.second);
+//
+    std::cout<< "~~~~~~~~~~ LARGEST ECCENTRICITY ORDERING ~~~~~~~~~~ \n\n" << std::endl;
+    order result5 = largestEccentricityOrdering(adjList);
+    print_results(result5.first, result5.second);
+//
+    std::cout<< "~~~~~~~~~~ DISTANCE FROM HIGHEST DEGREE VERTEX ORDERING ~~~~~~~~~~ \n\n" << std::endl;
+    order result6 = distanceFromHighestDegreeVertexOrdering(adjList, degreeList);
+    print_results(result6.first, result6.second);
 
 
     return 0;
@@ -283,7 +312,7 @@ int color_graph(custom_vec<vertex*>& ordering){
 
 
 //~~~~~~~~~~ ORDERING ALGORITHMS ~~~~~~~~~~//
-custom_vec<vertex*> smallestLastOrderingUtil(LinkedList<vertex*>*& adjList, custom_vec<LinkedList<vertex*>*>* degreeList){
+custom_vec<vertex*> smallestLastOrderingUtil(LinkedList<vertex*>* adjList, custom_vec<LinkedList<vertex*>*>* degreeList){
 
     custom_vec<vertex*> ordering;
     int deletedCount = 0;
@@ -339,7 +368,7 @@ custom_vec<vertex*> smallestLastOrderingUtil(LinkedList<vertex*>*& adjList, cust
     return rev_ordering;
 }
 
-order smallestLastOrdering(LinkedList<vertex*>*& adjList, custom_vec<LinkedList<vertex*>*>* degreeList){
+order smallestLastOrdering(LinkedList<vertex*>* adjList, custom_vec<LinkedList<vertex*>*>* degreeList){
 
     //call smallestLastOrdering
     custom_vec<vertex*> ordering = smallestLastOrderingUtil(adjList, degreeList);
@@ -349,7 +378,7 @@ order smallestLastOrdering(LinkedList<vertex*>*& adjList, custom_vec<LinkedList<
     return std::make_pair(ordering, num_colors);
 }
 
-order welshPowellOrdering(LinkedList<vertex*>*& adjList, custom_vec<LinkedList<vertex*>*>* degreeList){
+order welshPowellOrdering(LinkedList<vertex*>* adjList, custom_vec<LinkedList<vertex*>*>* degreeList){
 
     //initialize color
     int color = 1, colored = 0;
@@ -404,7 +433,7 @@ order welshPowellOrdering(LinkedList<vertex*>*& adjList, custom_vec<LinkedList<v
 
 }
 
-order uniformRandomOrdering(LinkedList<vertex*>*& adjList) {
+order uniformRandomOrdering(LinkedList<vertex*>* adjList) {
 
 
 
@@ -430,11 +459,11 @@ custom_vec<vertex*> largestLastOrderingUtil(LinkedList<vertex*>*& adjList, custo
     //iterate until all vertices are deleted off degreeList
     while(deletedCount < adjList->getLength()){
 
-        //loop through degreeList and find smallest populated degree list
+        //loop through degreeList and find largest populated degree list
         int max = max_index(degreeList);
         vertex* V = degreeList->at(max)->getHead()->getData();
 
-        //set smallest vertex V to deleted
+        //set largest vertex V to deleted
         V->deleted = -1;
 
         //delete vertex from degreeList
@@ -467,18 +496,17 @@ custom_vec<vertex*> largestLastOrderingUtil(LinkedList<vertex*>*& adjList, custo
         //reset iter
         V->P.currentToHead();
 
-
     }
 
-//    //reverse ordering
-//    custom_vec<vertex*> rev_ordering;
-//    for(int i = ordering.vsize() - 1; i > -1; i--)
-//        rev_ordering.push_back(ordering.at(i));
+    //reverse ordering
+    custom_vec<vertex*> rev_ordering;
+    for(int i = ordering.vsize() - 1; i > -1; i--)
+        rev_ordering.push_back(ordering.at(i));
 
-    return ordering;
+    return rev_ordering;
 }
 
-order largestLastOrdering(LinkedList<vertex*>*& adjList, custom_vec<LinkedList<vertex*>*>* degreeList){
+order largestLastOrdering(LinkedList<vertex*>* adjList, custom_vec<LinkedList<vertex*>*>* degreeList){
     //call largestLastOrdering
     custom_vec<vertex*> ordering = largestLastOrderingUtil(adjList, degreeList);
 
@@ -487,7 +515,7 @@ order largestLastOrdering(LinkedList<vertex*>*& adjList, custom_vec<LinkedList<v
     return std::make_pair(ordering, num_colors);
 }
 
-order largestEccentricityOrdering(LinkedList<vertex*>*& adjList){
+order largestEccentricityOrdering(LinkedList<vertex*>* adjList){
 
     //initialize random device
     std::random_device rd;
@@ -532,7 +560,7 @@ order largestEccentricityOrdering(LinkedList<vertex*>*& adjList){
 
 }
 
-order distanceFromHighestDegreeVertexOrdering(LinkedList<vertex*>*& adjList, custom_vec<LinkedList<vertex*>*>* degreeList){
+order distanceFromHighestDegreeVertexOrdering(LinkedList<vertex*>* adjList, custom_vec<LinkedList<vertex*>*>* degreeList){
 
     //find vertex with largest degree
     vertex* largestDegreeVertex;
@@ -543,7 +571,7 @@ order distanceFromHighestDegreeVertexOrdering(LinkedList<vertex*>*& adjList, cus
         }
     }
 
-    //intitialize bucket
+    //initialize bucket
     custom_vec<custom_vec<vertex*>> dist_bucket;
     for(int i = 0; i < degreeList->vsize() - 1; i++){
         dist_bucket.push_back(custom_vec<vertex*>());
