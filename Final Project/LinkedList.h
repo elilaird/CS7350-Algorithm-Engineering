@@ -163,21 +163,28 @@ Node<T>* LinkedList<T> :: remove(T x ){
             break;
         temp = temp->next;
     }
-    if(x != this->head && x != this->tail){
+    if(temp != this->head && temp != this->tail){
         temp->prev->next = temp->next;
         temp->next->prev = temp->prev;
     }
-    else if(x == this->head && x != this->tail){
+    else if(temp == this->head && temp != this->tail){
         head = head->next;
+        temp->next->prev = nullptr;
+
     }
-    else if(x == this->tail){
+    else if(temp == this->tail && temp == this->head){
+        temp->prev = temp->next = tail = head = nullptr;
+    }
+    else if(temp == this->tail){
         tail = tail->prev;
+        temp->prev->next = nullptr;
     }
     else{
         head = tail = nullptr;
     }
 
     length--;
+    this->currentToHead();
     return temp;
 }
 
