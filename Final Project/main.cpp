@@ -20,7 +20,7 @@ order smallestLastOrdering(LinkedList<vertex*>*& adjList, custom_vec<LinkedList<
 order welshPowellOrdering(LinkedList<vertex*>*& adjList, custom_vec<LinkedList<vertex*>*>* degreeList);
 order uniformRandomOrdering(LinkedList<vertex*>*& adjList);
 order largestLastOrdering(LinkedList<vertex*>*& adjList, custom_vec<LinkedList<vertex*>*>* degreeList);
-order largestEccentricityOrdering(LinkedList<vertex*>*& adjList, custom_vec<LinkedList<vertex*>*>* degreeList);
+order largestEccentricityOrdering(LinkedList<vertex*>*& adjList);
 order distanceFromHighestDegreeVertexOrdering(LinkedList<vertex*>*& adjList, custom_vec<LinkedList<vertex*>*>* degreeList);
 int color_graph(custom_vec<vertex*>& ordering);
 
@@ -98,6 +98,37 @@ void shuffle(custom_vec<vertex*>& v){
         v.swap(0, dist(g));
     }
 }
+int DFS_Util(LinkedList<vertex*>*& adjList, vertex* src, vertex* dest, custom_vec<bool>& visited){
+
+    //mark visited
+    visited.at(src->id-1) = true;
+
+    if(src->id == dest->id){
+        return 0;
+    }
+    //traverse neighbors
+    for (auto iter = src->P.getHead(); iter != nullptr; iter = iter->getNext()){
+        //if vertex not visited, traverse
+        if(!visited.at(iter->getData()->id - 1)){
+            return 1 + DFS_Util(adjList, iter->getData(), dest, visited);
+        }
+    }
+
+    return 0;
+
+}
+int DFS_Search(LinkedList<vertex*>*& adjList, vertex* src, vertex* dest) {
+
+    //initialize visited vector
+    custom_vec<bool> visited;
+    for (int i = 0; i < adjList->getLength(); i++){
+        visited.push_back(false);
+    }
+
+    int distance = DFS_Util(adjList, src, dest, visited);
+
+    return distance;
+}
 
 
 int main(int argc, char** argv) {
@@ -117,8 +148,9 @@ int main(int argc, char** argv) {
     //order result = welshPowellOrdering(adjList, degreeList);
     //order result = smallestLastOrdering(adjList, degreeList);
     //order result = uniformRandomOrdering(adjList);
-    order result = largestLastOrdering(adjList, degreeList);
-
+    //order result = largestLastOrdering(adjList, degreeList);
+    order result = largestEccentricityOrdering(adjList);
+    //order result = distanceFromHighestDegreeVertexOrdering(adjList, degreeList);
     print_results(result.first, result.second);
 
 
@@ -455,14 +487,91 @@ order largestLastOrdering(LinkedList<vertex*>*& adjList, custom_vec<LinkedList<v
     return std::make_pair(ordering, num_colors);
 }
 
-order largestEccentricityOrdering(LinkedList<vertex*>*& adjList, custom_vec<LinkedList<vertex*>*>* degreeList){
+order largestEccentricityOrdering(LinkedList<vertex*>*& adjList){
+
+    //initialize random device
+    std::random_device rd;
+    std::default_random_engine g(rd());
+
+    //distribution of vertex ids
+    std::uniform_int_distribution<int> dist(0, adjList->getLength() - 1);
+
+    //randomly select vertex calculate eccentricity of
+    vertex* center = adjList->operator[](dist(g))->getData();
+
+    //initialize eccentricity bucket list for bucket sort
+    custom_vec<custom_vec<vertex*>> eccentricityList;
+    for(int i = 0; i < adjList->getLength(); i++)
+        eccentricityList.push_back(custom_vec<vertex*>());
 
 
+    //calculate eccentricities from other vertices to randomly chosen vertex
+    for(auto iter = adjList->getHead(); iter != nullptr; iter = iter->getNext()){
+        if(iter->getData()->id == center->id)
+            continue;
+        int eccentricity = DFS_Search(adjList, iter->getData(), center);
+        eccentricityList.at(eccentricity).push_back(iter->getData());
+    }
+
+    //create ordering based off max eccentricity
+    custom_vec<vertex*> ordering;
+    for(int i = eccentricityList.vsize()-1; i >= 0; i--){
+        if(eccentricityList.at(i).vsize() > 0){
+            for(int k = 0; k < eccentricityList.at(i).vsize(); k++)
+                ordering.push_back(eccentricityList.at(i).at(k));
+        }
+    }
+
+    //add center to the end
+    ordering.push_back(center);
+
+
+    int num_colors = color_graph(ordering);
+
+    return std::make_pair(ordering, num_colors);
 
 }
 
 order distanceFromHighestDegreeVertexOrdering(LinkedList<vertex*>*& adjList, custom_vec<LinkedList<vertex*>*>* degreeList){
 
+    //find vertex with largest degree
+    vertex* largestDegreeVertex;
+    for(int i = degreeList->vsize() - 1; i >=0; i--){
+        if(degreeList->at(i)->getHead() != nullptr){
+            largestDegreeVertex = degreeList->at(i)->getHead()->getData();
+            break;
+        }
+    }
+
+    //intitialize bucket
+    custom_vec<custom_vec<vertex*>> dist_bucket;
+    for(int i = 0; i < degreeList->vsize() - 1; i++){
+        dist_bucket.push_back(custom_vec<vertex*>());
+    }
+
+    //find distances from each vertex to largest degree vertex
+    for(auto iter = adjList->getHead(); iter != nullptr; iter = iter->getNext()){
+        if(iter->getData()->id == largestDegreeVertex->id)
+            continue;
+        int distance = DFS_Search(adjList, iter->getData(), largestDegreeVertex);
+        dist_bucket.at(distance).push_back(iter->getData());
+    }
+
+    //create ordering sorted by largest distance from largest degree vertex
+    custom_vec<vertex*> ordering;
+    for(int i = dist_bucket.vsize() - 1; i >= 0; i--){
+        if(dist_bucket.at(i).vsize() > 0){
+            for(int k = 0; k < dist_bucket.at(i).vsize(); k++)
+                ordering.push_back(dist_bucket.at(i).at(k));
+        }
+    }
+
+    //add largest degree vertex to ordering
+    ordering.push_back(largestDegreeVertex);
+
+    int num_colors = color_graph(ordering);
+
+    return std::make_pair(ordering, num_colors);
 }
 
 
