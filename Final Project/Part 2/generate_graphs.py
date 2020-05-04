@@ -95,6 +95,25 @@ def build_graph(V, E, Type, verbose=0):
     if verbose: pprint(graph)
     return graph
 
+def graph_to_file(G, filepath):
+    print('saving graph to {} ...'.format(filepath))
+
+    num_V = len(G)
+    with open(filepath, 'w+') as f:
+        temp = []
+        f.write('{} # This is position {}. It shows the graph has {} vertices\n'.format(num_V,0,num_V))
+        for i in range(len(G)):
+            if i == 0:
+                f.write('{} # This is for vertex {} It starts at position {}\n'.format(num_V+1, i+1, num_V+1))
+                temp.append(num_V+1)
+            else:
+                f.write('{} # This is for vertex {} It starts at position {}\n'.format(temp[i-1]+len(G[i-1]), i+1, temp[i-1]+len(G[i-1])))
+                temp.append(temp[i-1]+len(G[i-1]))
+        for i,edges in enumerate(G):
+            for e in edges:
+                f.write('{} # Vertex {} is adjacent to vertex {}\n'.format(e+1,i+1,e+1))
+
+
 
 def main():
 
@@ -115,7 +134,8 @@ def main():
     print('Type:', Type)
 
     #build graph
-    G = build_graph(int(V), int(E), Type.lower(), verbose=1)
+    G = build_graph(int(V), int(E), Type.lower())
+    graph_to_file(G, 'graph.txt')
 
 
 
