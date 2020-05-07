@@ -45,3 +45,8 @@ void vertex::addEdge(LinkedList<vertex*>& adjList, int v) {
     currDegree++;
 
 }
+
+void vertex::setColor(int c, int order) {
+    this->colorVal = c;
+    this->orderColored = order;
+}

@@ -80,6 +80,7 @@ void print_results(custom_vec<vertex*> ordering, int num_colors){
                   << "\n\t color: "         << ordering.at(i)->colorVal
                   << "\n\t orig degree: "   << ordering.at(i)->origDegree
                   << "\n\t deg delete: "    << ordering.at(i)->currDegree
+                  << "\n\t order colored: " << ordering.at(i)->orderColored
                   << endl;
     }
 
@@ -88,7 +89,19 @@ void print_results(custom_vec<vertex*> ordering, int num_colors){
               << "\n Max Deleted Degree: "      << max_del_degree(ordering)
               << std::endl;
 }
-void outputToFile(custom_vec<vertex*> ordering){
+void outputToFile(custom_vec<vertex*> ordering, std::string filename){
+    std::ofstream file(filename);
+
+    file << "vertex,deleted,colored,org_deg,color\n";
+    for(int i=0; i < ordering.vsize(); i++){
+        file << ordering.at(i)->id              << ","
+             << ordering.at(i)->currDegree      << ","
+             << ordering.at(i)->orderColored    << ","
+             << ordering.at(i)->origDegree      << ","
+             << ordering.at(i)->colorVal        << "\n";
+    }
+
+    file.close();
 
 } /**Updated to output to file**/
 void shuffle(custom_vec<vertex*>& v){
@@ -170,7 +183,7 @@ int main(int argc, char** argv) {
             order result = smallestLastOrdering(adjList, degreeList, cliqueSize);
             print_results(result.first, result.second);
             std::cout << "Max Clique of Graph: " << cliqueSize << "\n" << std::endl;
-            outputToFile(result.first);
+            outputToFile(result.first, "slvo.csv");
 
         } break;
 
@@ -178,35 +191,35 @@ int main(int argc, char** argv) {
             std::cout<< "~~~~~~~~~~ WELSH-POWELL ORDERING ~~~~~~~~~~ \n\n" << std::endl;
             order result = welshPowellOrdering(adjList, degreeList);
             print_results(result.first, result.second);
-            outputToFile(result.first);
+            outputToFile(result.first, "wpo.csv");
         } break;
 
         case 3: {
             std::cout<< "~~~~~~~~~~ UNIFORM RANDOM ORDERING ~~~~~~~~~~ \n\n" << std::endl;
             order result = uniformRandomOrdering(adjList);
             print_results(result.first, result.second);
-            outputToFile(result.first);
+            outputToFile(result.first, "uniform.csv");
         } break;
 
         case 4: {
             std::cout<< "~~~~~~~~~~ LARGEST LAST VERTEX ORDERING ~~~~~~~~~~ \n\n" << std::endl;
             order result = largestLastOrdering(adjList, degreeList);
             print_results(result.first, result.second);
-            outputToFile(result.first);
+            outputToFile(result.first, "llvo.csv");
         } break;
 
         case 5: {
             std::cout<< "~~~~~~~~~~ LARGEST ECCENTRICITY ORDERING ~~~~~~~~~~ \n\n" << std::endl;
             order result = largestEccentricityOrdering(adjList);
             print_results(result.first, result.second);
-            outputToFile(result.first);
+            outputToFile(result.first, "leo.csv");
         } break;
 
         case 6: {
             std::cout<< "~~~~~~~~~~ DISTANCE FROM HIGHEST DEGREE VERTEX ORDERING ~~~~~~~~~~ \n\n" << std::endl;
             order result = distanceFromHighestDegreeVertexOrdering(adjList, degreeList);
             print_results(result.first, result.second);
-            outputToFile(result.first);
+            outputToFile(result.first, "distance.csv");
         } break;
 
         default:
@@ -295,8 +308,10 @@ int color_graph(custom_vec<vertex*>& ordering){
     custom_vec<int> color_set;
     color_set.push_back(1);
 
+    int num_colored = 0;
+
     //color first vertex
-    ordering.at(ordering.vsize() - 1)->colorVal = 1;
+    ordering.at(ordering.vsize() - 1)->setColor(1,++num_colored);
 
     for(int i = ordering.vsize()-2; i >= 0; i--){
 
@@ -323,7 +338,7 @@ int color_graph(custom_vec<vertex*>& ordering){
 
             //if not a neighboring color, color this vertex with k
             if(!isNeighboringColor){
-                ordering.at(i)->colorVal = k;
+                ordering.at(i)->setColor(k,++num_colored);
                 colored = true;
                 break;
             }
@@ -332,7 +347,7 @@ int color_graph(custom_vec<vertex*>& ordering){
         //if all of the colors are colors of neighbors then add new color
         if(!colored){
             color_set.push_back(color_set.vsize() + 1);
-            ordering.at(i)->colorVal = color_set.at(color_set.vsize() - 1);
+            ordering.at(i)->setColor(color_set.at(color_set.vsize() - 1), ++num_colored);
         }
 
 
@@ -400,12 +415,13 @@ custom_vec<vertex*> smallestLastOrderingUtil(LinkedList<vertex*>* adjList, custo
 
     }
 
-    //reverse ordering
-    custom_vec<vertex*> rev_ordering;
-    for(int i = ordering.vsize() - 1; i > -1; i--)
-        rev_ordering.push_back(ordering.at(i));
+    /** Outdated **/
+//    //reverse ordering
+//    custom_vec<vertex*> rev_ordering;
+//    for(int i = ordering.vsize() - 1; i > -1; i--)
+//        rev_ordering.push_back(ordering.at(i));
 
-    return rev_ordering;
+    return ordering;
 }
 
 order smallestLastOrdering(LinkedList<vertex*>* adjList, custom_vec<LinkedList<vertex*>*>* degreeList, int& cliqueSize){

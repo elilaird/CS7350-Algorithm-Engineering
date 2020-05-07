@@ -15,6 +15,7 @@ public:
     int origDegree;
     int colorVal;
     int deleted;
+    int orderColored;
 
     //edge list
     LinkedList<vertex*> P;
@@ -35,6 +36,7 @@ public:
     bool operator==(const vertex);
 
     void addEdge(LinkedList<vertex*>& adjList, int v);
+    void setColor(int c, int order); //Added to keep track of coloring order
 
 
 
