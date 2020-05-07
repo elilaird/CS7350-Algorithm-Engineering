@@ -12,6 +12,13 @@
 #include "node.h"
 #include <iostream>
 
+
+
+/*
+UPDATES:
+    - Remove function
+*/
+
 using namespace std;
 template<typename T>
 
@@ -155,6 +162,8 @@ void LinkedList<T> :: clear(){
     }
 }
 
+
+/***THIS FUNCTION HAS BEEN UPDATED***/
 template<typename T>
 Node<T>* LinkedList<T> :: remove(Node<T>* x ){
     if(this->length == 1){
@@ -165,6 +174,11 @@ Node<T>* LinkedList<T> :: remove(Node<T>* x ){
         x->prev->next = x->next;
     if(x->next != nullptr)
         x->next->prev = x->prev;
+
+    if(x == this->head)
+        this->head = x->next;
+    if(x == this->tail)
+        this->tail = x->prev;
 
     this->length--;
     this->currentToHead();

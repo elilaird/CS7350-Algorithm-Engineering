@@ -1,0 +1,22 @@
+5 # This is position 0. It shows the graph has 5 vertices
+6 # This is for vertex 1 It starts at position 6
+10 # This is for vertex 2 It starts at position 10
+13 # This is for vertex 3 It starts at position 13
+16 # This is for vertex 4 It starts at position 16
+19 # This is for vertex 5 It starts at position 19
+2 # Vertex 1 is adjacent to vertex 2
+3 # Vertex 1 is adjacent to vertex 3
+4 # Vertex 1 is adjacent to vertex 4
+5 # Vertex 1 is adjacent to vertex 5
+1 # Vertex 2 is adjacent to vertex 1
+3 # Vertex 2 is adjacent to vertex 3
+4 # Vertex 2 is adjacent to vertex 4
+1 # Vertex 3 is adjacent to vertex 1
+2 # Vertex 3 is adjacent to vertex 2
+5 # Vertex 3 is adjacent to vertex 5
+1 # Vertex 4 is adjacent to vertex 1
+2 # Vertex 4 is adjacent to vertex 2
+5 # Vertex 4 is adjacent to vertex 5
+1 # Vertex 5 is adjacent to vertex 1
+3 # Vertex 5 is adjacent to vertex 3
+4 # Vertex 5 is adjacent to vertex 4

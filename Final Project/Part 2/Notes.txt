@@ -1,0 +1,23 @@
+NOTES
+
+1. Update Part 1 (clearly mark changes)
+2. Write bash script to run python script and experiments
+
+
+
+
+Graphing
+* Keep x-axis with a constant step
+
+
+Tables
+*could have a column for expected runtime to compare with actual
+
+
+
+TODO:
+* redo walkthrough
+* run analysis
+* update report
+* update time complexities & space complexities
+* make graph for SLVO
