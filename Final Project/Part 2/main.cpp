@@ -3,6 +3,7 @@
 #include <string>
 #include <utility>
 #include <random>
+#include <chrono>
 
 #include "vertex.h"
 #include "LinkedList.h"
@@ -89,16 +90,17 @@ void print_results(custom_vec<vertex*> ordering, int num_colors){
               << "\n Max Deleted Degree: "      << max_del_degree(ordering)
               << std::endl;
 }
-void outputToFile(custom_vec<vertex*> ordering, std::string filename){
+void outputToFile(custom_vec<vertex*> ordering,long time,  std::string filename){
     std::ofstream file(filename);
 
-    file << "vertex,deleted,colored,org_deg,color\n";
+    file << "vertex,deleted,colored,org_deg,color,time\n";
     for(int i=0; i < ordering.vsize(); i++){
         file << ordering.at(i)->id              << ","
              << ordering.at(i)->currDegree      << ","
              << ordering.at(i)->orderColored    << ","
              << ordering.at(i)->origDegree      << ","
-             << ordering.at(i)->colorVal        << "\n";
+             << ordering.at(i)->colorVal        << ","
+             << time                            << "\n";
     }
 
     file.close();
@@ -163,6 +165,8 @@ int edgeCount(LinkedList<vertex*>*& adjList){
 /***Updated main to take input to select ordering method***/
 int main(int argc, char** argv) {
 
+    using namespace std::chrono;
+
     //read in input file
     ifstream file;
     file.open(argv[1], std::ifstream::in);
@@ -181,66 +185,85 @@ int main(int argc, char** argv) {
 
         case 1: {
             int cliqueSize = 1;
+
+            //take the current time
+            high_resolution_clock::time_point start = high_resolution_clock::now();
             order result = smallestLastOrdering(adjList, degreeList, cliqueSize);
+            high_resolution_clock::time_point end = high_resolution_clock::now();
+            auto total_time = duration_cast<nanoseconds>(end - start).count();
             if(verbose){
                 std::cout<< "~~~~~~~~~~ SMALLEST LAST VERTEX ORDERING ~~~~~~~~~~ \n\n" << std::endl;
                 print_results(result.first, result.second);
                 std::cout << "Max Clique of Graph: " << cliqueSize << "\n" << std::endl;
             }
             std::cout << "saving to ./output/slvo_" + string(argv[3]) + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv" << std::endl;
-            outputToFile(result.first, "./output/slvo_" + string(argv[3]) + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv");
+            outputToFile(result.first, total_time, "./output/slvo_" + string(argv[3]) + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv");
 
         } break;
 
         case 2: {
+            high_resolution_clock::time_point start = high_resolution_clock::now();
             order result = welshPowellOrdering(adjList, degreeList);
+            high_resolution_clock::time_point end = high_resolution_clock::now();
+            auto total_time = duration_cast<nanoseconds>(end - start).count();
             if(verbose){
                 std::cout<< "~~~~~~~~~~ WELSH-POWELL ORDERING ~~~~~~~~~~ \n\n" << std::endl;
                 print_results(result.first, result.second);
             }
             std::cout << "saving to ./output/wpo_" + string(argv[3]) + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv" << std::endl;
-            outputToFile(result.first, "./output/wpo_" + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv");
+            outputToFile(result.first,total_time, "./output/wpo_" + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv");
         } break;
 
         case 3: {
+            high_resolution_clock::time_point start = high_resolution_clock::now();
             order result = uniformRandomOrdering(adjList);
+            high_resolution_clock::time_point end = high_resolution_clock::now();
+            auto total_time = duration_cast<nanoseconds>(end - start).count();
             if(verbose){
                 std::cout<< "~~~~~~~~~~ UNIFORM RANDOM ORDERING ~~~~~~~~~~ \n\n" << std::endl;
                 print_results(result.first, result.second);
             }
             std::cout << "saving to ./output/uniform_" + string(argv[3]) + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv" << std::endl;
-            outputToFile(result.first, "./output/uniform_" + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv");
+            outputToFile(result.first,total_time, "./output/uniform_" + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv");
         } break;
 
         case 4: {
+            high_resolution_clock::time_point start = high_resolution_clock::now();
             order result = largestLastOrdering(adjList, degreeList);
+            high_resolution_clock::time_point end = high_resolution_clock::now();
+            auto total_time = duration_cast<nanoseconds>(end - start).count();
             if(verbose){
                 std::cout<< "~~~~~~~~~~ LARGEST LAST VERTEX ORDERING ~~~~~~~~~~ \n\n" << std::endl;
                 print_results(result.first, result.second);
             }
             std::cout << "saving to ./output/llvo_" + string(argv[3]) + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv" << std::endl;
-            outputToFile(result.first, "./output/llvo_" + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv");
+            outputToFile(result.first,total_time, "./output/llvo_" + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv");
         } break;
 
         case 5: {
+            high_resolution_clock::time_point start = high_resolution_clock::now();
             order result = largestEccentricityOrdering(adjList);
+            high_resolution_clock::time_point end = high_resolution_clock::now();
+            auto total_time = duration_cast<nanoseconds>(end - start).count();
             if(verbose){
                 print_results(result.first, result.second);
                 std::cout<< "~~~~~~~~~~ LARGEST ECCENTRICITY ORDERING ~~~~~~~~~~ \n\n" << std::endl;
             }
             std::cout << "saving to ./output/leo_" + string(argv[3]) + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv" << std::endl;
-            outputToFile(result.first, "./output/leo_" + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv");
+            outputToFile(result.first,total_time, "./output/leo_" + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv");
         } break;
 
         case 6: {
-
+            high_resolution_clock::time_point start = high_resolution_clock::now();
             order result = distanceFromHighestDegreeVertexOrdering(adjList, degreeList);
+            high_resolution_clock::time_point end = high_resolution_clock::now();
+            auto total_time = duration_cast<nanoseconds>(end - start).count();
             if(verbose){
                 std::cout<< "~~~~~~~~~~ DISTANCE FROM HIGHEST DEGREE VERTEX ORDERING ~~~~~~~~~~ \n\n" << std::endl;
                 print_results(result.first, result.second);
             }
             std::cout << "saving to ./output/distance_" + string(argv[3]) + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv" << std::endl;
-            outputToFile(result.first, "./output/distance_" + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv");
+            outputToFile(result.first,total_time, "./output/distance_" + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv");
         } break;
 
         default:
