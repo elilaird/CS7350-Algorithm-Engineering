@@ -1,0 +1,101 @@
+10 # This is position 0. It shows the graph has 10 vertices
+11 # This is for vertex 1 It starts at position 11
+20 # This is for vertex 2 It starts at position 20
+29 # This is for vertex 3 It starts at position 29
+38 # This is for vertex 4 It starts at position 38
+47 # This is for vertex 5 It starts at position 47
+56 # This is for vertex 6 It starts at position 56
+65 # This is for vertex 7 It starts at position 65
+74 # This is for vertex 8 It starts at position 74
+83 # This is for vertex 9 It starts at position 83
+92 # This is for vertex 10 It starts at position 92
+2 # Vertex 1 is adjacent to vertex 2
+3 # Vertex 1 is adjacent to vertex 3
+4 # Vertex 1 is adjacent to vertex 4
+5 # Vertex 1 is adjacent to vertex 5
+6 # Vertex 1 is adjacent to vertex 6
+7 # Vertex 1 is adjacent to vertex 7
+8 # Vertex 1 is adjacent to vertex 8
+9 # Vertex 1 is adjacent to vertex 9
+10 # Vertex 1 is adjacent to vertex 10
+1 # Vertex 2 is adjacent to vertex 1
+3 # Vertex 2 is adjacent to vertex 3
+4 # Vertex 2 is adjacent to vertex 4
+5 # Vertex 2 is adjacent to vertex 5
+6 # Vertex 2 is adjacent to vertex 6
+7 # Vertex 2 is adjacent to vertex 7
+8 # Vertex 2 is adjacent to vertex 8
+9 # Vertex 2 is adjacent to vertex 9
+10 # Vertex 2 is adjacent to vertex 10
+1 # Vertex 3 is adjacent to vertex 1
+2 # Vertex 3 is adjacent to vertex 2
+4 # Vertex 3 is adjacent to vertex 4
+5 # Vertex 3 is adjacent to vertex 5
+6 # Vertex 3 is adjacent to vertex 6
+7 # Vertex 3 is adjacent to vertex 7
+8 # Vertex 3 is adjacent to vertex 8
+9 # Vertex 3 is adjacent to vertex 9
+10 # Vertex 3 is adjacent to vertex 10
+1 # Vertex 4 is adjacent to vertex 1
+2 # Vertex 4 is adjacent to vertex 2
+3 # Vertex 4 is adjacent to vertex 3
+5 # Vertex 4 is adjacent to vertex 5
+6 # Vertex 4 is adjacent to vertex 6
+7 # Vertex 4 is adjacent to vertex 7
+8 # Vertex 4 is adjacent to vertex 8
+9 # Vertex 4 is adjacent to vertex 9
+10 # Vertex 4 is adjacent to vertex 10
+1 # Vertex 5 is adjacent to vertex 1
+2 # Vertex 5 is adjacent to vertex 2
+3 # Vertex 5 is adjacent to vertex 3
+4 # Vertex 5 is adjacent to vertex 4
+6 # Vertex 5 is adjacent to vertex 6
+7 # Vertex 5 is adjacent to vertex 7
+8 # Vertex 5 is adjacent to vertex 8
+9 # Vertex 5 is adjacent to vertex 9
+10 # Vertex 5 is adjacent to vertex 10
+1 # Vertex 6 is adjacent to vertex 1
+2 # Vertex 6 is adjacent to vertex 2
+3 # Vertex 6 is adjacent to vertex 3
+4 # Vertex 6 is adjacent to vertex 4
+5 # Vertex 6 is adjacent to vertex 5
+7 # Vertex 6 is adjacent to vertex 7
+8 # Vertex 6 is adjacent to vertex 8
+9 # Vertex 6 is adjacent to vertex 9
+10 # Vertex 6 is adjacent to vertex 10
+1 # Vertex 7 is adjacent to vertex 1
+2 # Vertex 7 is adjacent to vertex 2
+3 # Vertex 7 is adjacent to vertex 3
+4 # Vertex 7 is adjacent to vertex 4
+5 # Vertex 7 is adjacent to vertex 5
+6 # Vertex 7 is adjacent to vertex 6
+8 # Vertex 7 is adjacent to vertex 8
+9 # Vertex 7 is adjacent to vertex 9
+10 # Vertex 7 is adjacent to vertex 10
+1 # Vertex 8 is adjacent to vertex 1
+2 # Vertex 8 is adjacent to vertex 2
+3 # Vertex 8 is adjacent to vertex 3
+4 # Vertex 8 is adjacent to vertex 4
+5 # Vertex 8 is adjacent to vertex 5
+6 # Vertex 8 is adjacent to vertex 6
+7 # Vertex 8 is adjacent to vertex 7
+9 # Vertex 8 is adjacent to vertex 9
+10 # Vertex 8 is adjacent to vertex 10
+1 # Vertex 9 is adjacent to vertex 1
+2 # Vertex 9 is adjacent to vertex 2
+3 # Vertex 9 is adjacent to vertex 3
+4 # Vertex 9 is adjacent to vertex 4
+5 # Vertex 9 is adjacent to vertex 5
+6 # Vertex 9 is adjacent to vertex 6
+7 # Vertex 9 is adjacent to vertex 7
+8 # Vertex 9 is adjacent to vertex 8
+10 # Vertex 9 is adjacent to vertex 10
+1 # Vertex 10 is adjacent to vertex 1
+2 # Vertex 10 is adjacent to vertex 2
+3 # Vertex 10 is adjacent to vertex 3
+4 # Vertex 10 is adjacent to vertex 4
+5 # Vertex 10 is adjacent to vertex 5
+6 # Vertex 10 is adjacent to vertex 6
+7 # Vertex 10 is adjacent to vertex 7
+8 # Vertex 10 is adjacent to vertex 8
+9 # Vertex 10 is adjacent to vertex 9

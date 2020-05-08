@@ -45,6 +45,7 @@ public:
     LinkedList<T>& operator=( const LinkedList<T> &);
     Node<T>* operator[](int);
     int contains(T x);
+    Node<T>* find(T);
 
 private:
     Node<T>* head; //represents the first node in the list
@@ -160,6 +161,18 @@ void LinkedList<T> :: clear(){
             tail = temp;
         }
     }
+}
+
+/**Added to optimize code**/
+template <typename T>
+Node<T>* LinkedList<T> :: find(T x){
+    for(auto iter = this->head; iter != nullptr; iter = iter->next){
+        if(iter->getData() == x){
+            return iter;
+        }
+    }
+
+    return nullptr;
 }
 
 

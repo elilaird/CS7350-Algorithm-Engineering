@@ -397,8 +397,8 @@ custom_vec<vertex*> smallestLastOrderingUtil(LinkedList<vertex*>* adjList, custo
                 V->P.nextCurrent();
                 continue;
             }
-            //remove U from degree i list
-            vertex* U = degreeList->at(V->P.currentNode()->getData()->currDegree)->remove(V->P.currentNode())->getData();
+            //remove U from degree i list /** Updated to fix ptr issue **/
+            vertex* U = degreeList->at(V->P.currentNode()->getData()->currDegree)->remove(degreeList->at(V->P.currentNode()->getData()->currDegree)->find(V->P.currentNode()->getData()))->getData();
             numEdges--;//added to calc clique size
 
             //insert U into degree i-1 list
