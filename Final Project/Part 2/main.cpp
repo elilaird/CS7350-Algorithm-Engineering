@@ -209,7 +209,7 @@ int main(int argc, char** argv) {
                 print_results(result.first, result.second);
             }
             std::cout << "saving to ./output/uniform_" + string(argv[3]) + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv" << std::endl;
-            outputToFile(result.first, "uniform_" + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv");
+            outputToFile(result.first, "./output/uniform_" + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv");
         } break;
 
         case 4: {
@@ -219,7 +219,7 @@ int main(int argc, char** argv) {
                 print_results(result.first, result.second);
             }
             std::cout << "saving to ./output/llvo_" + string(argv[3]) + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv" << std::endl;
-            outputToFile(result.first, "llvo_" + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv");
+            outputToFile(result.first, "./output/llvo_" + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv");
         } break;
 
         case 5: {
@@ -229,7 +229,7 @@ int main(int argc, char** argv) {
                 std::cout<< "~~~~~~~~~~ LARGEST ECCENTRICITY ORDERING ~~~~~~~~~~ \n\n" << std::endl;
             }
             std::cout << "saving to ./output/leo_" + string(argv[3]) + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv" << std::endl;
-            outputToFile(result.first, "leo_" + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv");
+            outputToFile(result.first, "./output/leo_" + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv");
         } break;
 
         case 6: {
@@ -240,7 +240,7 @@ int main(int argc, char** argv) {
                 print_results(result.first, result.second);
             }
             std::cout << "saving to ./output/distance_" + string(argv[3]) + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv" << std::endl;
-            outputToFile(result.first, "distance_" + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv");
+            outputToFile(result.first, "./output/distance_" + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv");
         } break;
 
         default:
