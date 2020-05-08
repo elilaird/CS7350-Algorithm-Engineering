@@ -16,6 +16,8 @@ ordering = {
 
 
 def E_ratio(v,r):
+    if r == 1:
+        return round(((v*(v-1))/2)*r) - 1
     return round(((v*(v-1))/2)*r)
 
 
@@ -38,5 +40,8 @@ vertex_edge_pairs = [
     (100,E_ratio(100,.33)),
 ]
 
-subprocess.call([GENERATEGRAPHSEXE,str(vertex_edge_pairs[0][0]),str(vertex_edge_pairs[0][1]), 'complete'])
-subprocess.call([ORDERINGEXE, 'graph.txt', str(ordering['SmallestLastOrdering'])])
+for pair in vertex_edge_pairs:
+    for method in ordering:
+        for type in graph_options:
+            subprocess.call([GENERATEGRAPHSEXE,str(pair[0]),str(pair[1]), type])
+            subprocess.call([ORDERINGEXE, 'graph.txt', str(ordering[method]), type, '0'])

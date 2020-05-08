@@ -175,51 +175,72 @@ int main(int argc, char** argv) {
 
     parseInput(file, adjList, degreeList);
 
+    bool verbose = std::atoi(argv[4]);
+
     switch(std::atoi(argv[2])){
 
         case 1: {
-            std::cout<< "~~~~~~~~~~ SMALLEST LAST VERTEX ORDERING ~~~~~~~~~~ \n\n" << std::endl;
             int cliqueSize = 1;
             order result = smallestLastOrdering(adjList, degreeList, cliqueSize);
-            print_results(result.first, result.second);
-            std::cout << "Max Clique of Graph: " << cliqueSize << "\n" << std::endl;
-            outputToFile(result.first, "slvo.csv");
+            if(verbose){
+                std::cout<< "~~~~~~~~~~ SMALLEST LAST VERTEX ORDERING ~~~~~~~~~~ \n\n" << std::endl;
+                print_results(result.first, result.second);
+                std::cout << "Max Clique of Graph: " << cliqueSize << "\n" << std::endl;
+            }
+            std::cout << "saving to ./output/slvo_" + string(argv[3]) + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv" << std::endl;
+            outputToFile(result.first, "./output/slvo_" + string(argv[3]) + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv");
 
         } break;
 
         case 2: {
-            std::cout<< "~~~~~~~~~~ WELSH-POWELL ORDERING ~~~~~~~~~~ \n\n" << std::endl;
             order result = welshPowellOrdering(adjList, degreeList);
-            print_results(result.first, result.second);
-            outputToFile(result.first, "wpo.csv");
+            if(verbose){
+                std::cout<< "~~~~~~~~~~ WELSH-POWELL ORDERING ~~~~~~~~~~ \n\n" << std::endl;
+                print_results(result.first, result.second);
+            }
+            std::cout << "saving to ./output/wpo_" + string(argv[3]) + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv" << std::endl;
+            outputToFile(result.first, "./output/wpo_" + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv");
         } break;
 
         case 3: {
-            std::cout<< "~~~~~~~~~~ UNIFORM RANDOM ORDERING ~~~~~~~~~~ \n\n" << std::endl;
             order result = uniformRandomOrdering(adjList);
-            print_results(result.first, result.second);
-            outputToFile(result.first, "uniform.csv");
+            if(verbose){
+                std::cout<< "~~~~~~~~~~ UNIFORM RANDOM ORDERING ~~~~~~~~~~ \n\n" << std::endl;
+                print_results(result.first, result.second);
+            }
+            std::cout << "saving to ./output/uniform_" + string(argv[3]) + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv" << std::endl;
+            outputToFile(result.first, "uniform_" + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv");
         } break;
 
         case 4: {
-            std::cout<< "~~~~~~~~~~ LARGEST LAST VERTEX ORDERING ~~~~~~~~~~ \n\n" << std::endl;
             order result = largestLastOrdering(adjList, degreeList);
-            print_results(result.first, result.second);
-            outputToFile(result.first, "llvo.csv");
+            if(verbose){
+                std::cout<< "~~~~~~~~~~ LARGEST LAST VERTEX ORDERING ~~~~~~~~~~ \n\n" << std::endl;
+                print_results(result.first, result.second);
+            }
+            std::cout << "saving to ./output/llvo_" + string(argv[3]) + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv" << std::endl;
+            outputToFile(result.first, "llvo_" + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv");
         } break;
 
         case 5: {
-            std::cout<< "~~~~~~~~~~ LARGEST ECCENTRICITY ORDERING ~~~~~~~~~~ \n\n" << std::endl;
             order result = largestEccentricityOrdering(adjList);
-            print_results(result.first, result.second);
-            outputToFile(result.first, "leo.csv");
+            if(verbose){
+                print_results(result.first, result.second);
+                std::cout<< "~~~~~~~~~~ LARGEST ECCENTRICITY ORDERING ~~~~~~~~~~ \n\n" << std::endl;
+            }
+            std::cout << "saving to ./output/leo_" + string(argv[3]) + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv" << std::endl;
+            outputToFile(result.first, "leo_" + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv");
         } break;
 
         case 6: {
-            std::cout<< "~~~~~~~~~~ DISTANCE FROM HIGHEST DEGREE VERTEX ORDERING ~~~~~~~~~~ \n\n" << std::endl;
+
             order result = distanceFromHighestDegreeVertexOrdering(adjList, degreeList);
-            print_results(result.first, result.second);
-            outputToFile(result.first, "distance.csv");
+            if(verbose){
+                std::cout<< "~~~~~~~~~~ DISTANCE FROM HIGHEST DEGREE VERTEX ORDERING ~~~~~~~~~~ \n\n" << std::endl;
+                print_results(result.first, result.second);
+            }
+            std::cout << "saving to ./output/distance_" + string(argv[3]) + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv" << std::endl;
+            outputToFile(result.first, "distance_" + to_string(adjList->getLength()) + "_" + to_string(edgeCount(adjList)) + ".csv");
         } break;
 
         default:

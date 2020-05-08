@@ -58,9 +58,9 @@ def _cycle_graph(V):
 
     for v in range(V):
         if v == V-1:
-            G.append(0)
+            G.append([0])
         else:
-            G.append(v+1)
+            G.append([v+1])
 
     return G
 
@@ -131,13 +131,14 @@ def main():
     E = args.edges
     Type = args.type
 
-    print('V:', V)
-    print('E:', E)
-    print('Type:', Type)
+
+    #print('V:', V)
+    #print('E:', E)
+    #print('Type:', Type)
 
     #build graph
     G = build_graph(int(V), int(E), Type.lower())
-    graph_to_file(G, './cmake-build-debug/graph.txt')
+    graph_to_file(G, './graph.txt')
 
 
 
