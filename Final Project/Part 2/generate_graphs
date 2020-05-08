@@ -18,16 +18,31 @@ def _skewed_graph(V, E):
         for _ in range(V-i):
             skewed_dist.append(i)
 
-    while edge_count < E:
-        v = randint(0,V-1)
-        e = skewed_dist[randint(0, len(skewed_dist)-1)]
-        del skewed_dist[e]
+    while edge_count < E and len(skewed_dist) > 0:
+        #v = randint(0,V-1)
 
-        print(skewed_dist)
-        if e not in G[v] and e != v:
-            G[v].append(e)
-            G[e].append(v)
-            edge_count+=1
+        if len(skewed_dist) == 1:
+            e = skewed_dist[0]
+        else:
+            e = skewed_dist[randint(0, len(skewed_dist)-1)]
+
+
+
+        count = 0;
+        for v in range(V):
+            if e not in G[v] and e != v:
+                G[v].append(e)
+                G[e].append(v)
+                edge_count+=1
+                skewed_dist.remove(e)
+                break
+            else:
+                count += 1
+
+        if count == V:
+            skewed_dist.remove(e)
+
+
 
     return G
 
@@ -81,12 +96,12 @@ def build_graph(V, E, Type, verbose=0):
     elif Type == 'cycle':
         graph = _cycle_graph(V)
     elif Type == 'uniform':
-        if E >= V:
+        if E >= ((V*(V-1))/2):
             print('E must be less than V')
             exit(1)
         graph = _uniform_graph(V,E)
     elif Type == 'skewed':
-        if E >= V:
+        if E >= ((V*(V-1))/2):
             print('E must be less than V')
             exit(1)
         graph = _skewed_graph(V,E)
